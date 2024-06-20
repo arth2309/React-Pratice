@@ -28,7 +28,7 @@ const drawerWidth = 240;
 
 const Dashboard = (props : any) => {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
   const handleDrawerClose = () => {

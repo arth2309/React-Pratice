@@ -68,6 +68,7 @@ const Registration = (props : any) => {
           initialValues={intialvalues}
           validationSchema={validationschema}
           validateOnBlur={false}
+          validateOnChange = {false}
           onSubmit={SubmitHandler}
         >
           {({ values, errors, touched }) => (
