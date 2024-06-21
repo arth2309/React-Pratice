@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import { Formik, Field, Form } from "formik";
 import { RegistrationDetails } from "../../Type";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import * as Yup from "yup";
 import { Fragment } from "react/jsx-runtime";
 import Button from "@mui/material/Button";
@@ -22,8 +22,13 @@ import { useNavigate } from "react-router-dom";
 
 
 const Registration = (props : any) => {
+
+ 
+  
+
+  const {onGetData,list,cid,setId} = props;
   const intialvalues: RegistrationDetails = {
-    id : Math.random(),
+    id : cid,
     name: "",
     email: "",
     interested: "",
@@ -35,7 +40,7 @@ const Registration = (props : any) => {
     name: Yup.string().required("Please enter Name"),
     email: Yup.string()
       .email("Enter valid email")
-      .required("Please enter email"),
+      .required("Please enter email").test('email-exists','email already exists',(email) =>  {return !(list.some((item : RegistrationDetails) => item.email === email ))}),
     interested: Yup.string().required("interested field is required"),
     number: Yup.number()
       .min(0, "number should be positive")
@@ -47,15 +52,18 @@ const Registration = (props : any) => {
   });
 
 
+ 
 
 
   const detailsNavigate = useNavigate();
   
+ 
 
   const SubmitHandler = (values : RegistrationDetails) => 
     {
- 
-            props.onGetData(values);
+        
+            setId((c : number) => c+1)
+            onGetData(values);
             detailsNavigate('/Details');
 
   }

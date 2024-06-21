@@ -57,7 +57,7 @@ const Participationdetails = (props : {list : RegistrationDetails[]}  ) => {
             },
           },
         }}
-        
+        pageSizeOptions={[3]}
         checkboxSelection
         disableRowSelectionOnClick
       />

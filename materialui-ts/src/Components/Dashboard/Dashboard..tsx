@@ -19,7 +19,7 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import Registration from './Registration';
 import { Route,BrowserRouter,Routes,Link } from 'react-router-dom';
 import { RegistrationDetails } from '../../Type';
-import { useState } from 'react';
+import { useState,useMemo } from 'react';
 import Participationdetails from './Participationdetails';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,6 +30,10 @@ const Dashboard = (props : any) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+
+  const[isSelected,SetisSelected] = useState<boolean>(true);
+
+  const[cid,setId] = useState<number>(1);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -63,7 +67,7 @@ const Dashboard = (props : any) => {
       <List>
         
         <ListItem disablePadding >
-            <ListItemButton onClick={() => {registrationNavigate('/')}} >
+            <ListItemButton selected={isSelected} onClick={() => {  SetisSelected(true); registrationNavigate('/')}} >
               <ListItemIcon>
                 <CreateIcon /> 
               </ListItemIcon>
@@ -71,7 +75,7 @@ const Dashboard = (props : any) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding >
-            <ListItemButton onClick={() => {detailsNavigate('/Details')}} >
+            <ListItemButton selected = {!isSelected} onClick={() => {  SetisSelected(false); detailsNavigate('/Details')}} >
               <ListItemIcon>
               <ViewListIcon />
               </ListItemIcon>
@@ -152,7 +156,7 @@ const Dashboard = (props : any) => {
         <Toolbar />
        
           <Routes>
-            <Route path = '/' element = {<Registration onGetData = {getDataHandler} />} />
+            <Route path = '/' element = {<Registration onGetData = {getDataHandler} list = {list} cid = {cid} setId = {setId}/>}  />
             <Route path = '/Details' element = {<Participationdetails list = {list} />} />
           </Routes>
      
