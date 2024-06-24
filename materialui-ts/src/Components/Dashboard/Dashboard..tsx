@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -17,21 +17,27 @@ import Typography from '@mui/material/Typography';
 import CreateIcon from '@mui/icons-material/Create';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import Registration from './Registration';
-import { Route,BrowserRouter,Routes,Link } from 'react-router-dom';
+import { Route,Routes } from 'react-router-dom';
 import { RegistrationDetails } from '../../Type';
-import { useState,useMemo } from 'react';
+import { useState,useContext } from 'react';
 import Participationdetails from './Participationdetails';
 import { useNavigate } from 'react-router-dom';
+import CountContext from '../../store/count-context';
+import { Count } from '../../Type';
 
 
 const drawerWidth = 240;
 
+
+
 const Dashboard = (props : any) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+  const [isClosing, setIsClosing] =  useState(false);
 
   const[isSelected,SetisSelected] = useState<boolean>(true);
+
+  const {count} = useContext<Count>(CountContext);
 
   const[cid,setId] = useState<number>(1);
 
@@ -111,8 +117,16 @@ const Dashboard = (props : any) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-             Indoor Games
+          <Typography variant="h6" noWrap component="div" style={{display : 'flex' , justifyContent : 'space-between', width : '100%'}}>
+           
+                 <div>
+                 Indoor Games
+                 </div>
+                 <div>
+                  Total Participants :  {count}
+                 </div>
+          
+             
           </Typography>
         </Toolbar>
       </AppBar>

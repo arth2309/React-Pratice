@@ -21,6 +21,8 @@ const Participationdetails = (props : {list : RegistrationDetails[]}  ) => {
           field: 'email',
           headerName: 'Email',
           width: 150,
+          editable : true
+        
          
         },
         {

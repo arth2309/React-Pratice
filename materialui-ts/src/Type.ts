@@ -8,3 +8,8 @@ export type RegistrationDetails = {
     checked : string[]
 
 }
+
+export type Count = {
+    count : number;
+}
+

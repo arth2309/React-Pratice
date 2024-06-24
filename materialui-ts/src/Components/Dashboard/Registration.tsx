@@ -1,29 +1,50 @@
 import TextField from "@mui/material/TextField";
-import { Formik, Field, Form } from "formik";
-import { RegistrationDetails } from "../../Type";
-import { useState, useMemo } from "react";
+import { Formik, Field, Form,useFormikContext } from "formik";
+import { RegistrationDetails,Count } from "../../Type";
+import { useRef,useEffect,useContext } from "react";
 import * as Yup from "yup";
 import { Fragment } from "react/jsx-runtime";
 import Button from "@mui/material/Button";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormGroup from "@mui/material/FormGroup";
 import Checkbox from "@mui/material/Checkbox";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
-import { FormControl } from "@mui/material";
 import Container from "@mui/material/Container";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
+import CountContext from "../../store/count-context";
+import { toast,ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
+
 
 
 const Registration = (props : any) => {
 
- 
+
+  const Formikfunction = () => {
+
+    const {values} = useFormikContext<RegistrationDetails>();
+    
+    useEffect(() => {
+
+      if(values.checked.length !== values.number)
+        {
+  
+          toast(`it should contains exactly ${values.number} games`);
+
+        }
+     
+    },[(values.checked.length !== values.number)])
+
+    return null;
+  
+  }
+  
   
 
   const {onGetData,list,cid,setId} = props;
@@ -35,6 +56,10 @@ const Registration = (props : any) => {
     number: 0,
     checked: [],
   };
+
+
+  const ctx = useContext<Count>(CountContext);
+
 
   const validationschema = Yup.object().shape({
     name: Yup.string().required("Please enter Name"),
@@ -57,16 +82,35 @@ const Registration = (props : any) => {
 
   const detailsNavigate = useNavigate();
   
- 
+ const inputRef = useRef<HTMLInputElement>(null);
+
+ useEffect(() => {
+
+  if(inputRef.current)
+    {
+      inputRef.current.focus();
+    }
+
+ },[])
 
   const SubmitHandler = (values : RegistrationDetails) => 
     {
         
             setId((c : number) => c+1)
             onGetData(values);
+         
+          ctx.count = ctx.count +1;
+       
+        
+              
             detailsNavigate('/Details');
 
   }
+
+
+  
+
+  
 
   return (
     <Fragment>
@@ -79,11 +123,14 @@ const Registration = (props : any) => {
           validateOnChange = {false}
           onSubmit={SubmitHandler}
         >
+         
+        
+
           {({ values, errors, touched }) => (
             <Form>
                 <h3 style={{marginTop : '50px'}}>Personal Details :</h3>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} md ={6}>
                   <Field
                     as={TextField}
                     style={{ width: "100%" }}
@@ -93,9 +140,10 @@ const Registration = (props : any) => {
                     helperText={
                       errors.name && touched.name ? errors.name : null
                     }
+                    inputRef={inputRef} 
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md ={6}>
                   <Field
                     as={TextField}
                     style={{ width: "100%" }}
@@ -110,9 +158,10 @@ const Registration = (props : any) => {
               </Grid>
               <h3 style={{marginTop : '50px'}}>Sports Details :</h3>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} md ={6}>
                   <FormLabel required style={{color : errors.interested && touched.interested ? 'red' : ''}} >interested </FormLabel>
-                  <Field as={RadioGroup} name="interested" style = {{display : 'flex'}}>
+                  <Field as={RadioGroup} name="interested">
+                    <div style={{display : 'flex'}}>
                     <FormControlLabel
                       value="yes"
                       control={<Radio />}
@@ -123,10 +172,12 @@ const Registration = (props : any) => {
                       control={<Radio />}
                       label="no"
                     />
+
+</div>
                  
                   </Field>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} md = {2}>
                   <Field
                     as={TextField}
                     type="number"
@@ -139,7 +190,7 @@ const Registration = (props : any) => {
                     }
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item  xs={6} md = {2}>
                   <Field as={FormGroup}>
                     <FormControlLabel
                       control={<Checkbox />}
@@ -157,7 +208,7 @@ const Registration = (props : any) => {
                     />
                     </Field>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item  xs={6} md = {2}>
                     <Field as={FormGroup}>
                     <FormControlLabel
                       control={<Checkbox />}
@@ -176,7 +227,7 @@ const Registration = (props : any) => {
                   </Field>
                   </Grid>
               
-                {/* <Grid item xs = {3}>
+               {/* <Grid item xs = {3}>
                 <Stack direction="row" spacing={1}>
               <Typography>Singles</Typography>
               <Switch
@@ -185,7 +236,7 @@ const Registration = (props : any) => {
               />
               <Typography>Doubles</Typography>
             </Stack>
-                </Grid> */}
+                </Grid>  */}
               </Grid>
 
               <div style={{ display: "flex", justifyContent: "end" }}>
@@ -196,6 +247,8 @@ const Registration = (props : any) => {
                 >
                   Submit
                 </Button>
+                <ToastContainer />
+                <Formikfunction />
               </div>
             </Form>
           )}
