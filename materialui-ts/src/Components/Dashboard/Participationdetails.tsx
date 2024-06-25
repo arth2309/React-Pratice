@@ -64,7 +64,6 @@ const Participationdetails = (props : {list : RegistrationDetails[]}  ) => {
           renderCell: (params) => (
             <Button
               variant="contained"
-              color="secondary"
               onClick={() => handleDelete(params.row.id)}
             >
               Delete
