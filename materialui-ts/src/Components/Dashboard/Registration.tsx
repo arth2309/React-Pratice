@@ -23,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
+
 const Registration = (props : any) => {
 
 
@@ -59,13 +60,14 @@ const Registration = (props : any) => {
 
 
   const ctx = useContext<Count>(CountContext);
+  
 
 
   const validationschema = Yup.object().shape({
     name: Yup.string().required("Please enter Name"),
     email: Yup.string()
       .email("Enter valid email")
-      .required("Please enter email").test('email-exists','email already exists',(email) =>  {return !(list.some((item : RegistrationDetails) => item.email === email ))}),
+      .required("Please enter email").test('email-exists','email already exists',(email) =>  {return !(JSON.parse(localStorage.getItem('participantsarray') || '[]').some((item : RegistrationDetails) => item.email === email ))}),
     interested: Yup.string().required("interested field is required"),
     number: Yup.number()
       .min(0, "number should be positive")
@@ -100,8 +102,15 @@ const Registration = (props : any) => {
             onGetData(values);
          
           ctx.count = ctx.count +1;
+
+          
+    
        
-        
+         const updatearray = JSON.parse(localStorage.getItem('participantsarray') || '[]')
+         updatearray.push(values);
+         localStorage.setItem('participantsarray',JSON.stringify(updatearray));
+
+          
               
             detailsNavigate('/Details');
 

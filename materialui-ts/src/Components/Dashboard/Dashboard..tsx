@@ -39,7 +39,7 @@ const Dashboard = (props : any) => {
 
   const {count} = useContext<Count>(CountContext);
 
-  const[cid,setId] = useState<number>(1);
+  const[cid,setId] = useState<number>(JSON.parse(localStorage.getItem('participantsarray') || '[]').length + 1);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -88,7 +88,7 @@ const Dashboard = (props : any) => {
               <ListItemText>Show Details</ListItemText>
             </ListItemButton>
           </ListItem>
-        {/* <ListItem><Link to="/Details"><ListItemButton><ListItemIcon><CreateIcon /></ListItemIcon><ListItemText>Registration</ListItemText></ListItemButton></Link></ListItem> */}
+       
       </List>
      
     </div>

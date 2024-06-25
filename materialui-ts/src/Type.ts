@@ -1,3 +1,6 @@
+
+
+
 export type RegistrationDetails = {
     
     id : number,
@@ -12,4 +15,6 @@ export type RegistrationDetails = {
 export type Count = {
     count : number;
 }
+
+
 

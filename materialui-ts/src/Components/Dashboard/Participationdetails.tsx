@@ -1,11 +1,24 @@
-import { RegistrationDetails } from "../../Type";
+
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Button } from "@mui/material";
+import { useContext, useState } from "react";
+import CountContext from "../../store/count-context";
+import { Count,RegistrationDetails } from "../../Type";
+import { useNavigate } from 'react-router-dom';
+
 
 
 
 const Participationdetails = (props : {list : RegistrationDetails[]}  ) => {
+
+  const ctx = useContext<Count>(CountContext);
+  const detailsNavigate = useNavigate();
+
+  
+
+ 
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
 
@@ -43,9 +56,36 @@ const Participationdetails = (props : {list : RegistrationDetails[]}  ) => {
           width: 200,
          
         },
+
+        {
+          field: 'action',
+          headerName: 'Action',
+          width: 200,
+          renderCell: (params) => (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              Delete
+            </Button>
+          ),
+        },
       ];
+
+      const handleDelete = (id: number) => {
+
+        ctx.count = ctx.count - 1;
+        const updatedRows = JSON.parse(localStorage.getItem('participantsarray') || '[]').filter((row : RegistrationDetails) => row.id !== id);
+   
+    localStorage.setItem('participantsarray', JSON.stringify(updatedRows));
+   
+    detailsNavigate('/Details');
+    
+        
+      };
       
-      const rows = props.list
+      const rows = JSON.parse(localStorage.getItem('participantsarray') || '[]')
 
   return (
     <Box sx={{ height: 400, width: '100%' }}>

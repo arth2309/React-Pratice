@@ -7,11 +7,13 @@ import  CountContext from './store/count-context'
 import { Count } from './Type';
 
 function App() {
+
+  // localStorage.setItem('participantsarray',JSON.stringify([]));
   return (
     <div >
       <BrowserRouter>
     <CountContext.Provider value={{
-      count : 0
+      count :  JSON.parse(localStorage.getItem('participantsarray') || '[]').length
     }}>
           <Dashboard />
     </CountContext.Provider>
