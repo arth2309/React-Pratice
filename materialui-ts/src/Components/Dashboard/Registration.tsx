@@ -17,6 +17,11 @@ import { useNavigate } from "react-router-dom";
 import CountContext from "../../store/count-context";
 import { toast,ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch,useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { itemActions } from "../../store";
+
+
 
 
 
@@ -26,6 +31,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Registration = (props : any) => {
 
+
+  const dispatch = useDispatch();
+
+  const items = useSelector((state : RootState) => state.items)
 
   const Formikfunction = () => {
 
@@ -49,6 +58,7 @@ const Registration = (props : any) => {
   
 
   const {onGetData,list,cid,setId} = props;
+  
   const intialvalues: RegistrationDetails = {
     id : cid,
     name: "",
@@ -67,7 +77,7 @@ const Registration = (props : any) => {
     name: Yup.string().required("Please enter Name"),
     email: Yup.string()
       .email("Enter valid email")
-      .required("Please enter email").test('email-exists','email already exists',(email) =>  {return !(JSON.parse(localStorage.getItem('participantsarray') || '[]').some((item : RegistrationDetails) => item.email === email ))}),
+      .required("Please enter email").test('email-exists','email already exists',(email) =>  {return !(items.some((item) => item.email === email ))}),
     interested: Yup.string().required("interested field is required"),
     number: Yup.number()
       .min(0, "number should be positive")
@@ -104,11 +114,11 @@ const Registration = (props : any) => {
           ctx.count = ctx.count +1;
 
           
-    
+           dispatch(itemActions.addItem(values));
        
-         const updatearray = JSON.parse(localStorage.getItem('participantsarray') || '[]')
-         updatearray.push(values);
-         localStorage.setItem('participantsarray',JSON.stringify(updatearray));
+        //  const updatearray = JSON.parse(localStorage.getItem('participantsarray') || '[]')
+        //  updatearray.push(values);
+        //  localStorage.setItem('participantsarray',JSON.stringify(updatearray));
 
           
               

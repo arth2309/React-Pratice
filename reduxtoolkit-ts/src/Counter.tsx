@@ -1,16 +1,14 @@
 import { counterActions } from "./store";
 import {useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store";
 
-type CounterState = {
-    counter : number,
-    showCounter : boolean
-}
+
 
 const Counter = () => {
 
     const dispatch = useDispatch();
-    const counter = useSelector((state : CounterState) => state.counter);
-    const show = useSelector((state : CounterState) => state.showCounter);
+    const counter = useSelector((state : RootState) => state.counter.counter);
+    
 
     const incrementHandler = () => {
 

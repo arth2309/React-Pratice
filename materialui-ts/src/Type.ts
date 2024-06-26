@@ -16,5 +16,11 @@ export type Count = {
     count : number;
 }
 
+export type RegistrationDetailsArray =  {
+
+    items : RegistrationDetails[]
+}
+
+
 
 
